@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>РИЦА.TECH — студия веб-разработки в Гагре | Лендинги, интернет-магазины, автоматизация торговли</title>
+<meta name="description" content="Студия разработки из Гагры. Создаём одностраничные сайты, интернет-магазины и автоматизируем торговлю: кассы, склад, 1С, онлайн-оплаты. Запуск от 7 дней.">
+<meta property="og:title" content="РИЦА.TECH — студия веб-разработки в Гагре">
+<meta property="og:description" content="Лендинги, интернет-магазины, автоматизация торговли. Делаем у моря — запускаем по всему миру.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230B1917'/><path d='M4 24 L13 9 L18 18 L22 11 L28 24 Z' fill='%23FF5A1F'/><rect x='4' y='26' width='24' height='2' fill='%233EC9B0'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2EEE2; --paper-2:#E8E1CF;
+  --ink:#0E1B18; --ink-60:rgba(14,27,24,.62); --line:rgba(14,27,24,.16);
+  --tan:#FF5A1F; --sea:#157064; --aqua:#3EC9B0;
+  --dark:#0B1917; --dark-2:#10231F; --cream:#EFEAD8;
+  --disp:'Unbounded',sans-serif; --body:'Golos Text',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--tan);color:#fff}
+img{max-width:100%;display:block}
+a{color:inherit}
+.mono{font-family:var(--mono)}
+.wrap{width:min(1240px,92vw);margin:0 auto}
+section{padding:clamp(4.5rem,9vw,7.5rem) 0;position:relative}
+
+/* шумовая плёнка */
+.noise{position:fixed;inset:0;z-index:120;pointer-events:none;opacity:.055;
+background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/></filter><rect width="140" height="140" filter="url(%23n)"/></svg>')}
+
+/* прогресс-бар */
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--tan);z-index:200}
+
+/* ── шапка ── */
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--paper);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s}
+header.scrolled{border-color:var(--line);box-shadow:0 4px 0 rgba(14,27,24,.06)}
+.hrow{display:flex;align-items:center;justify-content:space-between;height:76px;gap:1.5rem}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;font-family:var(--disp);font-weight:800;font-size:1.05rem;letter-spacing:.02em}
+.logo svg{flex:none}
+.logo .dot{color:var(--tan);animation:blink 2.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+nav.desk{display:flex;gap:1.9rem}
+nav.desk a{font-size:.9rem;font-weight:500;text-decoration:none;position:relative;padding:.3em 0}
+nav.desk a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--tan);transform:scaleX(0);transform-origin:right;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+nav.desk a:hover::after,nav.desk a.active::after{transform:scaleX(1);transform-origin:left}
+.btn{display:inline-flex;align-items:center;gap:.6em;font-family:var(--body);font-weight:600;font-size:.92rem;padding:.9em 1.5em;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;text-decoration:none;line-height:1;transition:transform .18s,box-shadow .18s,background .18s;box-shadow:5px 5px 0 var(--ink)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn--tan{background:var(--tan);color:#fff}
+.btn--dark{background:var(--dark);color:var(--cream)}
+.burger{display:none;background:none;border:2px solid var(--ink);width:46px;height:46px;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+.burger span{width:20px;height:2px;background:var(--ink);transition:.3s}
+body.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.menu-open .burger span:nth-child(2){opacity:0}
+body.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mnav{position:fixed;inset:0;background:var(--dark);z-index:99;display:flex;flex-direction:column;justify-content:center;padding:8vw;gap:.4rem;clip-path:inset(0 0 100% 0);transition:clip-path .55s cubic-bezier(.22,1,.36,1)}
+body.menu-open .mnav{clip-path:inset(0 0 0 0)}
+.mnav a{font-family:var(--disp);font-weight:800;font-size:clamp(1.7rem,7vw,3rem);color:var(--cream);text-decoration:none;padding:.35em 0;border-bottom:1px solid rgba(239,234,216,.14);display:flex;align-items:baseline;gap:1rem}
+.mnav a small{font-family:var(--mono);font-size:.75rem;color:var(--aqua);font-weight:400}
+
+/* ── герой ── */
+.hero{padding:9.5rem 0 4rem;position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+.hero .wrap{position:relative}
+.corner{position:absolute;font-family:var(--mono);color:var(--sea);font-size:1rem;user-select:none}
+.c1{top:0;left:0}.c2{top:0;right:0}.c3{bottom:0;left:0}.c4{bottom:0;right:0}
+.hero-grid{display:grid;grid-template-columns:1.25fr .95fr;gap:3rem;align-items:start}
+.kicker{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sea);display:inline-flex;align-items:center;gap:.7em}
+.kicker::before{content:"";width:34px;height:2px;background:var(--tan)}
+.hero h1{font-family:var(--disp);font-weight:800;font-size:clamp(2.5rem,6.8vw,5.6rem);line-height:1.02;text-transform:uppercase;margin:1.2rem 0 1.6rem;letter-spacing:-.01em}
+.hero h1 .accent{color:var(--tan)}
+.hero-sub{max-width:34rem;font-size:1.08rem;color:var(--ink-60)}
+.hero-sub b{color:var(--ink)}
+.hero-cta{display:flex;gap:1rem;margin-top:2.2rem;flex-wrap:wrap}
+.coords{margin-top:3rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;color:var(--ink-60);display:flex;gap:1.6rem;flex-wrap:wrap}
+.coords i{font-style:normal;color:var(--tan)}
+
+/* терминал */
+.term{border:2px solid var(--ink);background:var(--dark);color:var(--cream);box-shadow:10px 10px 0 var(--tan);font-family:var(--mono);font-size:.83rem;line-height:1.9;transform:rotate(1.2deg)}
+.term-bar{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;border-bottom:1px solid rgba(239,234,216,.15)}
+.term-bar i{width:11px;height:11px;border-radius:50%;background:#5a6a66}
+.term-bar i:nth-child(1){background:#e5563f}.term-bar i:nth-child(2){background:#e8b23f}.term-bar i:nth-child(3){background:#3ec9b0}
+.term-bar span{margin-left:auto;font-size:.68rem;color:rgba(239,234,216,.5)}
+.term-body{padding:1.2rem 1.3rem;min-height:236px}
+.term-body div{white-space:pre-wrap;word-break:break-word}
+.t-cmd{color:var(--aqua)} .t-ok{color:#cfe9d8} .t-ok::before{content:"✓ ";color:var(--aqua)} .t-url{color:var(--tan)}
+.cursor{display:inline-block;width:9px;height:1.15em;background:var(--tan);vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
+
+/* статистика */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-top:4rem}
+.stat{padding:1.4rem 1.4rem 0;border-left:1px solid var(--line)}
+.stat:first-child{border-left:none;padding-left:0}
+.stat b{font-family:var(--disp);font-weight:800;font-size:clamp(1.5rem,3vw,2.2rem);display:block}
+.stat b em{font-style:normal;color:var(--tan)}
+.stat span{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-60)}
+
+/* ── бегущая строка ── */
+.ticker{background:var(--dark);border-block:2px solid var(--ink);overflow:hidden;padding:.9rem 0;transform:rotate(-1deg) scale(1.02)}
+.tk{display:flex;width:max-content;animation:mq 26s linear infinite}
+.ticker:hover .tk{animation-play-state:paused}
+.tk span{font-family:var(--disp);font-weight:600;font-size:clamp(.95rem,1.6vw,1.25rem);text-transform:uppercase;color:var(--cream);padding:0 1.4rem;display:flex;align-items:center;gap:2.8rem;white-space:nowrap}
+.tk span::after{content:"◆";color:var(--tan);font-size:.8em}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* заголовки секций */
+.sec-head{margin-bottom:clamp(2.5rem,5vw,4rem)}
+.h2{font-family:var(--disp);font-weight:800;font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1.06;text-transform:uppercase;margin-top:1rem;letter-spacing:-.01em}
+.lm{display:block;overflow:hidden}
+.lm>span{display:block;transform:translateY(115%);transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.in .lm:nth-child(2)>span{transition-delay:.12s}
+.in .lm:nth-child(3)>span{transition-delay:.24s}
+.in .lm>span{transform:none}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+
+/* ── услуги ── */
+.split{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,5vw,5rem);align-items:start}
+.sticky{position:sticky;top:110px}
+.sticky p{color:var(--ink-60);margin:1.2rem 0 1.6rem;max-width:26rem}
+.inc{list-style:none;margin-bottom:2rem}
+.inc li{padding:.55rem 0;border-bottom:1px dashed var(--line);font-size:.92rem;display:flex;gap:.7rem}
+.inc li::before{content:"→";color:var(--tan);font-weight:700}
+.acc-item{border-top:2px solid var(--ink)}
+.acc-item:last-child{border-bottom:2px solid var(--ink)}
+.acc-head{width:100%;background:none;border:none;cursor:pointer;display:grid;grid-template-columns:3.2rem 1fr auto;align-items:center;gap:1rem;padding:1.6rem 0;text-align:left;font-family:inherit;color:inherit}
+.acc-head .num{font-family:var(--mono);color:var(--sea);font-size:.85rem}
+.acc-head h3{font-family:var(--disp);font-weight:600;font-size:clamp(1.15rem,2.4vw,1.7rem);text-transform:uppercase;transition:color .25s,transform .3s}
+.acc-head:hover h3{color:var(--tan);transform:translateX(6px)}
+.acc-head .price{font-family:var(--mono);font-size:.78rem;color:var(--ink-60);text-align:right;line-height:1.5}
+.acc-head .price b{display:block;color:var(--ink);font-size:.95rem}
+.acc-toggle{font-family:var(--mono);color:var(--tan);font-size:1.3rem;transition:transform .4s;justify-self:end}
+.acc-item.open .acc-toggle{transform:rotate(45deg)}
+.acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1)}
+.acc-item.open .acc-body{grid-template-rows:1fr}
+.acc-body>div{overflow:hidden}
+.acc-inner{padding:0 0 1.8rem 3.2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.acc-inner p{color:var(--ink-60);font-size:.95rem}
+.acc-inner ul{list-style:none}
+.acc-inner ul li{font-size:.9rem;padding:.4rem 0;border-bottom:1px dashed var(--line)}
+.acc-inner ul li::before{content:"＋ ";color:var(--tan);font-weight:700}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;grid-column:1/-1}
+.chip{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);padding:.4em .8em;transition:.25s;background:transparent;color:inherit;cursor:default}
+.chip:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* ── процесс ── */
+.process{background:var(--paper-2)}
+.steps{list-style:none;border-left:2px solid var(--ink);margin-left:.5rem}
+.step{position:relative;padding:1.6rem 0 1.6rem 2.4rem;display:grid;grid-template-columns:1fr auto;gap:.4rem 2rem;border-bottom:1px solid var(--line);transition:background .3s,padding-left .3s}
+.step:hover{background:rgba(255,90,31,.06);padding-left:3rem}
+.step::before{content:"";position:absolute;left:-7px;top:2.35rem;width:12px;height:12px;background:var(--tan);border:2px solid var(--ink);transition:transform .3s}
+.step:hover::before{transform:scale(1.5) rotate(45deg)}
+.step h3{font-family:var(--disp);font-weight:600;font-size:1.15rem;text-transform:uppercase;display:flex;align-items:baseline;gap:.9rem}
+.step h3 .n{font-family:var(--mono);font-size:.8rem;color:var(--sea)}
+.step p{color:var(--ink-60);font-size:.94rem;max-width:38rem;margin-top:.3rem}
+.step .days{font-family:var(--mono);font-size:.75rem;border:1px solid var(--ink);padding:.5em .9em;align-self:center;white-space:nowrap;background:var(--paper)}
+
+/* ── кейсы: разбросанные открытки ── */
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2rem}
+.case{background:#FBF9F1;border:1px solid var(--ink);box-shadow:7px 7px 0 rgba(14,27,24,.14);transform:rotate(var(--r,0deg));transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s;display:flex;flex-direction:column}
+.case:nth-child(3n+2){margin-top:2.4rem}
+.case:hover{transform:rotate(0deg) translateY(-8px);box-shadow:12px 14px 0 rgba(255,90,31,.25);z-index:2}
+.case-img{overflow:hidden;border-bottom:1px solid var(--ink);aspect-ratio:4/2.9}
+.case-img img{width:100%;height:100%;object-fit:cover;animation:kb 16s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.1) translate(1.5%,-1.5%)}}
+.case-meta{padding:1.2rem 1.3rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:.45rem}
+.case-file{font-size:.68rem;color:var(--sea);letter-spacing:.08em}
+.case h3{font-family:var(--disp);font-weight:600;font-size:1.2rem}
+.case p{font-size:.88rem;color:var(--ink-60)}
+.case-stat{margin-top:auto;padding-top:.8rem;border-top:1px dashed var(--line);display:flex;align-items:baseline;gap:.6rem}
+.case-stat b{font-family:var(--disp);color:var(--tan);font-size:1.3rem}
+.case-stat span{font-size:.78rem;font-family:var(--mono);color:var(--ink-60)}
+
+/* ── автоматизация (тёмная) ── */
+.auto{background:var(--dark);color:var(--cream)}
+.auto .ghost{position:absolute;top:2rem;right:-2rem;font-family:var(--disp);font-weight:800;font-size:clamp(6rem,22vw,18rem);color:transparent;-webkit-text-stroke:1px rgba(62,201,176,.1);pointer-events:none;line-height:1;user-select:none}
+.auto .kicker{color:var(--aqua)}
+.auto p.lead{max-width:36rem;color:rgba(239,234,216,.72);margin-top:1.2rem}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;margin:2.6rem 0;font-family:var(--mono);font-size:.82rem}
+.node{border:1px solid var(--aqua);padding:.8em 1.3em;background:var(--dark-2);transition:.3s}
+.node:hover{background:var(--aqua);color:var(--dark)}
+.arrow{color:var(--tan);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
+.auto-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;margin-top:1rem}
+.checks{list-style:none}
+.checks li{padding:1rem 0;border-bottom:1px solid rgba(239,234,216,.14);display:flex;gap:1rem;font-size:1rem}
+.checks li b{color:var(--aqua);font-family:var(--mono);flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:.6rem;align-content:flex-start}
+.auto .chip{border-color:rgba(239,234,216,.3);font-size:.75rem}
+.auto .chip:hover{background:var(--aqua);color:var(--dark);border-color:var(--aqua)}
+.counters{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(239,234,216,.14);border:1px solid rgba(239,234,216,.14);margin-top:3.5rem}
+.cnt{background:var(--dark);padding:1.6rem 1.4rem}
+.cnt b{font-family:var(--disp);font-weight:800;font-size:clamp(1.6rem,3.4vw,2.6rem);color:var(--tan);display:block}
+.cnt b small{font-size:.5em;color:var(--aqua)}
+.cnt span{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(239,234,216,.55)}
+
+/* ── отзывы ── */
+.rev-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:2rem;align-items:start}
+.rev{border:1px solid var(--ink);background:#FBF9F1;padding:2rem;position:relative;box-shadow:6px 6px 0 rgba(14,27,24,.12)}
+.rev.big{transform:rotate(-.8deg)}
+.rev::before{content:"“";font-family:var(--disp);font-size:4.5rem;color:var(--tan);position:absolute;top:-.6rem;left:1.2rem;line-height:1}
+.rev q{font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:500;quotes:none;display:block;padding-top:1.6rem}
+.rev footer{margin-top:1.4rem;font-family:var(--mono);font-size:.75rem;color:var(--ink-60)}
+.rev footer b{color:var(--ink)}
+.rev-col{display:grid;gap:2rem}
+.rev.sm{padding:1.5rem;font-size:.95rem}
+.rev.sm:nth-child(2){transform:rotate(1deg);background:var(--paper-2)}
+
+/* ── FAQ ── */
+.faq{background:var(--paper-2)}
+.faq-list{max-width:840px}
+.faq .acc-item{border-top:1px solid var(--ink)}
+.faq .acc-head{grid-template-columns:1fr auto;padding:1.3rem 0}
+.faq .acc-head h3{font-family:var(--body);font-weight:600;font-size:1.05rem;text-transform:none}
+.faq .acc-inner{grid-template-columns:1fr;padding:0 0 1.4rem}
+
+/* ── контакты ── */
+.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,5vw,5rem)}
+.field{margin-bottom:1.3rem}
+.field label{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-60);margin-bottom:.45rem}
+.field input,.field select,.field textarea{width:100%;border:2px solid var(--ink);background:#FBF9F1;padding:.85em 1em;font-family:var(--body);font-size:.95rem;color:var(--ink);transition:.2s;border-radius:0;appearance:none}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;box-shadow:4px 4px 0 var(--tan);border-color:var(--ink)}
+.field.err input,.field.err textarea,.field.err select{border-color:var(--tan);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.info-card{border:2px solid var(--ink);background:var(--dark);color:var(--cream);padding:2.2rem;box-shadow:10px 10px 0 var(--tan)}
+.info-card h3{font-family:var(--disp);font-size:1.1rem;text-transform:uppercase;margin-bottom:1.4rem}
+.info-row{display:flex;justify-content:space-between;gap:1rem;padding:.85rem 0;border-bottom:1px solid rgba(239,234,216,.15);font-size:.95rem}
+.info-row .k{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--aqua);align-self:center;flex:none}
+.info-row a{color:var(--cream);text-decoration:none;border-bottom:1px solid transparent;transition:.2s}
+.info-row a:hover{color:var(--tan);border-color:var(--tan)}
+.info-row.big a{font-family:var(--disp);font-size:1.15rem;font-weight:600}
+.info-foot{margin-top:1.4rem;font-family:var(--mono);font-size:.72rem;color:rgba(239,234,216,.5);line-height:1.8}
+
+/* ── футер ── */
+footer.site{background:var(--dark);color:var(--cream);padding:4rem 0 2rem;border-top:2px solid var(--ink)}
+.giant{font-family:var(--disp);font-weight:800;font-size:clamp(3rem,12.5vw,11rem);line-height:.95;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.5px rgba(239,234,216,.4);transition:.5s;user-select:none}
+.giant:hover{-webkit-text-stroke-color:var(--tan)}
+.foot-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin:3rem 0;padding-top:2.5rem;border-top:1px solid rgba(239,234,216,.15)}
+.foot-cols h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:1rem}
+.foot-cols a{display:block;color:rgba(239,234,216,.8);text-decoration:none;font-size:.92rem;padding:.25rem 0;transition:.2s}
+.foot-cols a:hover{color:var(--tan);transform:translateX(4px)}
+.foot-bottom{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--mono);font-size:.7rem;color:rgba(239,234,216,.45);border-top:1px solid rgba(239,234,216,.15);padding-top:1.5rem}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:-120px;transform:translateX(-50%);background:var(--ink);color:var(--cream);border:2px solid var(--tan);padding:1rem 1.8rem;font-family:var(--mono);font-size:.82rem;z-index:300;transition:bottom .5s cubic-bezier(.22,1,.36,1);box-shadow:6px 6px 0 rgba(255,90,31,.4);max-width:90vw;text-align:center}
+#toast.show{bottom:2rem}
+
+/* адаптив */
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr}
+  .term{max-width:560px}
+  .split,.auto-grid,.rev-grid,.contact-grid{grid-template-columns:1fr}
+  .sticky{position:static}
+  .cases-grid{grid-template-columns:repeat(2,1fr)}
+  .stats,.counters{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--line)}
+}
+@media(max-width:820px){
+  nav.desk,.header-cta{display:none}
+  .burger{display:flex}
+}
+@media(max-width:640px){
+  .cases-grid{grid-template-columns:1fr}
+  .case:nth-child(3n+2){margin-top:0}
+  .acc-inner{grid-template-columns:1fr;padding-left:0}
+  .foot-cols{grid-template-columns:1fr}
+  .step{grid-template-columns:1fr}
+  .step .days{justify-self:start}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+  html{scroll-behavior:auto}
+  .lm>span{transform:none}.rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="noise" aria-hidden="true"></div>
+<div id="bar" aria-hidden="true"></div>
+
+<header id="header">
+  <div class="wrap hrow">
+    <a href="#top" class="logo" aria-label="РИЦА.TECH — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" fill="#0B1917"/><path d="M4 23 L13 9 L18 17.5 L22 11 L28 23 Z" fill="#FF5A1F"/><rect x="4" y="25.5" width="24" height="2.5" fill="#3EC9B0"/></svg>
+      р<span class="dot">и</span>ца.tech
+    </a>
+    <nav class="desk" aria-label="Основная навигация">
+      <a href="#services" data-nav="services">Услуги</a>
+      <a href="#process" data-nav="process">Процесс</a>
+      <a href="#cases" data-nav="cases">Кейсы</a>
+      <a href="#auto" data-nav="auto">Автоматизация</a>
+      <a href="#faq" data-nav="faq">Вопросы</a>
+    </nav>
+    <a href="#contact" class="btn btn--tan header-cta">Обсудить проект</a>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<nav class="mnav" aria-label="Мобильное меню">
+  <a href="#services"><small>01</small>Услуги</a>
+  <a href="#process"><small>02</small>Процесс</a>
+  <a href="#cases"><small>03</small>Кейсы</a>
+  <a href="#auto"><small>04</small>Автоматизация</a>
+  <a href="#faq"><small>05</small>Вопросы</a>
+  <a href="#contact"><small>06</small>Контакты</a>
+</nav>
+
+<main id="top">
+
+<!-- ГЕРОЙ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="corner c1" aria-hidden="true">+</span><span class="corner c2" aria-hidden="true">+</span>
+    <span class="corner c3" aria-hidden="true">+</span><span class="corner c4" aria-hidden="true">+</span>
+    <div class="hero-grid">
+      <div>
+        <span class="kicker">студия разработки · Гагра · Абхазия</span>
+        <h1 aria-label="Лендинги. Магазины. Автоматизация.">
+          <span class="scr" data-text="Лендинги.">Лендинги.</span><br>
+          <span class="scr" data-text="Магазины.">Магазины.</span><br>
+          <span class="scr accent" data-text="Автоматизация.">Автоматизация.</span>
+        </h1>
+        <p class="hero-sub">Независимая студия у Чёрного моря. Проектируем, дизайним и запускаем то, что приносит заявки и продажи: <b>одностраничники, интернет-магазины и торговлю без тетрадок</b> — касса, склад и онлайн в одной системе.</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn--tan">Получить смету за 24 часа</a>
+          <a href="#cases" class="btn">Смотреть кейсы ↓</a>
+        </div>
+        <div class="coords">
+          <span><i>◉</i> 43.3281° N, 40.2239° E</span>
+          <span>GMT+3 · пн–сб 9:00–19:00</span>
+          <span>elev. 8 m a.s.l.</span>
+        </div>
+      </div>
+      <div class="term" role="img" aria-label="Терминал: деплой проекта за 9 дней">
+        <div class="term-bar"><i></i><i></i><i></i><span>ritsa — deploy.sh</span></div>
+        <div class="term-body" id="termBody"></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat rv"><b><span class="num" data-count="6">0</span> <em>лет</em></b><span>делаем веб у моря</span></div>
+      <div class="stat rv d1"><b><span class="num" data-count="47">0</span> <em>+</em></b><span>проектов запущено</span></div>
+      <div class="stat rv d2"><b>от <span class="num" data-count="7">0</span> <em>дней</em></b><span>до первого запуска</span></div>
+      <div class="stat rv d3"><b><span class="num" data-count="24">0</span><em>/7</em></b><span>поддержка магазинов</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- БЕГУЩАЯ СТРОКА -->
+<div class="ticker" aria-hidden="true">
+  <div class="tk">
+    <span>Одностраничные сайты</span><span>Интернет-магазины</span><span>Автоматизация торговли</span><span>Кассы · Склад · 1С</span><span>ЮKassa · СБП</span><span>Поддержка 24/7</span>
+    <span>Одностраничные сайты</span><span>Интернет-магазины</span><span>Автоматизация торговли</span><span>Кассы · Склад · 1С</span><span>ЮKassa · СБП</span><span>Поддержка 24/7</span>
+  </div>
+</div>
+
+<!-- УСЛУГИ -->
+<section id="services">
+  <div class="wrap split">
+    <div class="sticky rv">
+      <span class="kicker">01 — Услуги</span>
+      <h2 class="h2"><span class="lm"><span>Три вещи, которые</span></span><span class="lm"><span>мы делаем очень</span></span><span class="lm"><span>хорошо</span></span></h2>
+      <p>Не распыляемся на всё подряд. Глубоко копаем в трёх направлениях — поэтому знаем все грабли заранее.</p>
+      <ul class="inc">
+        <li>Аналитика и прототип до дизайна</li>
+        <li>Адаптив под все экраны</li>
+        <li>SEO-база и метрика с целями</li>
+        <li>Обучение вашей команды</li>
+      </ul>
+      <a href="#contact" class="btn btn--dark">Запросить смету</a>
+    </div>
+    <div>
+      <div class="acc-item rv" data-open="true">
+        <button class="acc-head" aria-expanded="false">
+          <span class="num">/01</span>
+          <h3>Лендинг и одностраничники</h3>
+          <span class="price"><b>от 60 000 ₽</b>7–14 дней</span>
+          <span class="acc-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="acc-body"><div><div class="acc-inner">
+          <p>Одна страница — одна цель: заявка, запись или продажа. Собираем смыслы, упаковываем в дизайн и подключаем всё, что нужно для приёма денег.</p>
+          <ul>
+            <li>Прототип и продающий текст</li>
+            <li>Уникальный дизайн, не шаблон</li>
+            <li>Анимации и интерактив</li>
+            <li>Оплаты, CRM и мессенджеры</li>
+            <li>Метрика + цели + аналитика</li>
+          </ul>
+          <div class="tags"><span class="chip">услуги</span><span class="chip">туры</span><span class="chip">horeca</span><span class="chip">мероприятия</span></div>
+        </div></div></div>
+      </div>
+      <div class="acc-item rv d1">
+        <button class="acc-head" aria-expanded="false">
+          <span class="num">/02</span>
+          <h3>Интернет-магазины</h3>
+          <span class="price"><b>от 180 000 ₽</b>3–6 недель</span>
+          <span class="acc-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="acc-body"><div><div class="acc-inner">
+          <p>Каталог, корзина, оплата и доставка — под ключ. Магазин, который удобно вести вам и удобно покупать вашим клиентам.</p>
+          <ul>
+            <li>Каталог до 10 000 товаров</li>
+            <li>Фильтры, поиск, быстрые карточки</li>
+            <li>ЮKassa, СБП, рассрочка</li>
+            <li>Синхронизация со складом и 1С</li>
+            <li>Личный кабинет и история заказов</li>
+          </ul>
+          <div class="tags"><span class="chip">продукты</span><span class="chip">одежда</span><span class="chip">локальные товары</span><span class="chip">доставка</span></div>
+        </div></div></div>
+      </div>
+      <div class="acc-item rv d2">
+        <button class="acc-head" aria-expanded="false">
+          <span class="num">/03</span>
+          <h3>Автоматизация торговли</h3>
+          <span class="price"><b>от 90 000 ₽</b>2–4 недели</span>
+          <span class="acc-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="acc-body"><div><div class="acc-inner">
+          <p>Свяжем кассу, склад и онлайн в одну систему. Остатки всегда точные, чеки пробиваются сами, отчёт по выручке — утром в Telegram.</p>
+          <ul>
+            <li>Кассы и фискализация (54-ФЗ)</li>
+            <li>МойСклад, 1С, Эвотор, Честный ЗНАК</li>
+            <li>Цены и остатки синхронно везде</li>
+            <li>Telegram-бот для приёма заказов</li>
+            <li>Дашборд владельца в один клик</li>
+          </ul>
+          <div class="tags"><span class="chip">розница</span><span class="chip">кафе</span><span class="chip">рынки</span><span class="chip">доставка</span></div>
+        </div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОЦЕСС -->
+<section id="process" class="process">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">02 — Процесс</span>
+      <h2 class="h2"><span class="lm"><span>Как проходит запуск</span></span></h2>
+    </div>
+    <ol class="steps">
+      <li class="step rv"><div><h3><span class="n">Шаг 01</span>Бриф и смета</h3><p>Созвон на 30 минут, вопросы только по делу. Фиксируем объём, срок и цену — они не «поплывут» в середине проекта.</p></div><span class="days">≈ 1 день</span></li>
+      <li class="step rv d1"><div><h3><span class="n">Шаг 02</span>Прототип и текст</h3><p>Структура страницы, офферы, смыслы. Сначала договариваемся «что сказать», потом рисуем.</p></div><span class="days">2–4 дня</span></li>
+      <li class="step rv d2"><div><h3><span class="n">Шаг 03</span>Дизайн</h3><p>Макеты под ваш бренд и характер аудитории. Два круга правок уже в стоимости.</p></div><span class="days">3–7 дней</span></li>
+      <li class="step rv d3"><div><h3><span class="n">Шаг 04</span>Разработка и интеграции</h3><p>Вёрстка, движок, оплаты, CRM, касса и склад. Каждые пару дней показываем живую сборку, а не скриншоты.</p></div><span class="days">от 5 дней</span></li>
+      <li class="step rv d4"><div><h3><span class="n">Шаг 05</span>Запуск и рост</h3><p>Домен, метрика, обучение команды и 30 дней поддержки бесплатно. Дальше — развитие по дорожной карте.</p></div><span class="days">1 день</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- КЕЙСЫ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">03 — Кейсы</span>
+      <h2 class="h2"><span class="lm"><span>Сделано у моря —</span></span><span class="lm"><span>работает везде</span></span></h2>
+    </div>
+    <div class="cases-grid">
+      <article class="case rv" style="--r:-2.2deg">
+        <div class="case-img"><img src="https://picsum.photos/seed/mandarin-grocery-delivery/720/520" alt="Кейс «Мандарин» — интернет-магазин доставки продуктов" loading="lazy"></div>
+        <div class="case-meta">
+          <span class="case-file mono">case_01 · e-com + склад</span>
+          <h3>«Мандарин»</h3>
+          <p>Доставка фруктов и локальных продуктов по Абхазии и югу России. Каталог, СБП, синхронизация остатков.</p>
+          <div class="case-stat"><b>×3.2</b><span>заказов за сезон</span></div>
+        </div>
+      </article>
+      <article class="case rv d1" style="--r:1.8deg">
+        <div class="case-img"><img src="https://picsum.photos/seed/gagra-seaside-boutique-hotel/720/520" alt="Кейс «Амра Плаза» — сайт бутик-отеля" loading="lazy"></div>
+        <div class="case-meta">
+          <span class="case-file mono">case_02 · лендинг + бронь</span>
+          <h3>«Амра Плаза»</h3>
+          <p>Бутик-отель в Гагре: одностраничник с модулем бронирования и оплатой, без комиссий агрегаторов.</p>
+          <div class="case-stat"><b>62%</b><span>броней напрямую</span></div>
+        </div>
+      </article>
+      <article class="case rv d2" style="--r:-1.4deg">
+        <div class="case-img"><img src="https://picsum.photos/seed/eucalyptus-seaside-cafe/720/520" alt="Кейс «Эвкалипт» — автоматизация сети кафе" loading="lazy"></div>
+        <div class="case-meta">
+          <span class="case-file mono">case_03 · автоматизация</span>
+          <h3>«Эвкалипт»</h3>
+          <p>Сеть кафе у моря: 4 кассы, онлайн-меню, склад и отчёты владельцу в Telegram каждое утро.</p>
+          <div class="case-stat"><b>−18 ч</b><span>рутины в неделю</span></div>
+        </div>
+      </article>
+      <article class="case rv" style="--r:2.1deg">
+        <div class="case-img"><img src="https://picsum.photos/seed/abkhazia-mountain-tours/720/520" alt="Кейс «Гагра Тур» — магазин экскурсий" loading="lazy"></div>
+        <div class="case-meta">
+          <span class="case-file mono">case_04 · магазин услуг</span>
+          <h3>«Гагра Тур»</h3>
+          <p>Экскурсии по Абхазии: каталог туров, календарь, онлайн-оплата и авто-подтверждение в WhatsApp.</p>
+          <div class="case-stat"><b>×2</b><span>выручка за сезон</span></div>
+        </div>
+      </article>
+      <article class="case rv d1" style="--r:-1.8deg">
+        <div class="case-img"><img src="https://picsum.photos/seed/ritsa-wine-cellar/720/520" alt="Кейс «Рица Вайн» — витрина винодельни" loading="lazy"></div>
+        <div class="case-meta">
+          <span class="case-file mono">case_05 · витрина + бренд</span>
+          <h3>«Рица Вайн»</h3>
+          <p>Семейная винодельня: атмосферная витрина с историей бренда и приёмом заказов через менеджера.</p>
+          <div class="case-stat"><b>+214%</b><span>времени на сайте</span></div>
+        </div>
+      </article>
+      <article class="case rv d2" style="--r:1.5deg">
+        <div class="case-img"><img src="https://picsum.photos/seed/black-sea-fish-market/720/520" alt="Кейс «Свежий улов» — доставка морепродуктов" loading="lazy"></div>
+        <div class="case-meta">
+          <span class="case-file mono">case_06 · лендинг + whatsapp</span>
+          <h3>«Свежий улов»</h3>
+          <p>Доставка черноморской рыбы и морепродуктов: одностраничник с быстрым заказом в один тап.</p>
+          <div class="case-stat"><b>340</b><span>заявок за первый месяц</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- АВТОМАТИЗАЦИЯ -->
+<section id="auto" class="auto">
+  <span class="ghost" aria-hidden="true">РИЦА</span>
+  <div class="wrap">
+    <span class="kicker">04 — Автоматизация торговли</span>
+    <h2 class="h2"><span class="lm"><span>Торговля без тетрадок</span></span><span class="lm"><span>и пересорта</span></span></h2>
+    <p class="lead rv">Магазин, кафе или рынок — соберём кассу, склад и сайт в один контур. Товар продаётся на точке — и тут же обновляется на сайте. Никаких двойных учётов и «а сколько у нас осталось?».</p>
+    <div class="flow rv" aria-label="Схема обмена данными">
+      <span class="node">Касса</span><span class="arrow">➜</span>
+      <span class="node">Каталог и цены</span><span class="arrow">➜</span>
+      <span class="node">Сайт / магазин</span><span class="arrow">➜</span>
+      <span class="node">Отчёт в Telegram</span><span class="arrow">⟲</span>
+      <span class="node">Склад</span>
+    </div>
+    <div class="auto-grid">
+      <ul class="checks rv">
+        <li><b>[01]</b>Остатки на сайте всегда равны остаткам на полке</li>
+        <li><b>[02]</b>Чек по 54-ФЗ пробивается автоматически — онлайн и на точке</li>
+        <li><b>[03]</b>Выручка, маржа и топ-товары — утром в одном сообщении</li>
+        <li><b>[04]</b>Заказы из Telegram и WhatsApp падают прямо в систему</li>
+        <li><b>[05]</b>Маркировка «Честный ЗНАК» без штрафов и ручного ввода</li>
+      </ul>
+      <div class="chips rv d1">
+        <span class="chip">1С:Розница</span><span class="chip">МойСклад</span><span class="chip">Эвотор</span><span class="chip">СБИС</span><span class="chip">Честный ЗНАК</span><span class="chip">ЮKassa</span><span class="chip">СБП</span><span class="chip">Т-Банк</span><span class="chip">Telegram Bot API</span><span class="chip">WhatsApp Business</span><span class="chip">Яндекс Метрика</span><span class="chip">GA4</span>
+      </div>
+    </div>
+    <div class="counters">
+      <div class="cnt rv"><b><span class="num" data-count="14">0</span></b><span>касс подключено</span></div>
+      <div class="cnt rv d1"><b><span class="num" data-count="38">0</span></b><span>интеграций в проде</span></div>
+      <div class="cnt rv d2"><b><span class="num" data-count="99.9" data-dec="1">0</span><small>%</small></b><span>аптайм онлайн-касс</span></div>
+      <div class="cnt rv d3"><b><span class="num" data-count="31">0</span></b><span>магазин на поддержке</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">05 — Отзывы</span>
+      <h2 class="h2"><span class="lm"><span>Слово клиентам</span></span></h2>
+    </div>
+    <div class="rev-grid">
+      <blockquote class="rev big rv">
+        <q>Сделали магазин за три недели, хотя все вокруг говорили «минимум два месяца». Сезон отработали без единого сбоя — ни касса, ни сайт ни разу не легли в пик.</q>
+        <footer><b>Даур А.</b> · основатель «Мандарин»</footer>
+      </blockquote>
+      <div class="rev-col">
+        <blockquote class="rev sm rv d1">
+          <q>Наконец-то вижу остатки и выручку с телефона. Касса, склад и сайт — одно целое, а не три таблички.</q>
+          <footer><b>Лика Г.</b> · управляющая «Эвкалипт»</footer>
+        </blockquote>
+        <blockquote class="rev sm rv d2">
+          <q>Говорят на человеческом языке, а не терминами. Любая правка прилетала в тот же день — это редкость.</q>
+          <footer><b>Марина К.</b> · отель «Амра Плаза»</footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="faq">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">06 — Вопросы</span>
+      <h2 class="h2"><span class="lm"><span>Спрашивают чаще всего</span></span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="acc-item rv"><button class="acc-head" aria-expanded="false"><h3>Сколько стоит сайт?</h3><span class="acc-toggle" aria-hidden="true">+</span></button>
+        <div class="acc-body"><div><div class="acc-inner"><p>Лендинг — от 60 000 ₽, интернет-магазин — от 180 000 ₽, автоматизация — от 90 000 ₽. Точную смету считаем после брифа: бесплатно и за один день. Цена фиксируется в договоре и не меняется по ходу работ.</p></div></div></div>
+      </div>
+      <div class="acc-item rv d1"><button class="acc-head" aria-expanded="false"><h3>Сколько времени займёт проект?</h3><span class="acc-toggle" aria-hidden="true">+</span></button>
+        <div class="acc-body"><div><div class="acc-inner"><p>Одностраничник — от 7 рабочих дней, магазин — 3–6 недель, автоматизация — 2–4 недели. Срок прописываем в договоре, а каждые 2–3 дня показываем живой прогресс.</p></div></div></div>
+      </div>
+      <div class="acc-item rv d2"><button class="acc-head" aria-expanded="false"><h3>Вы в Гагре — а если я в другом городе?</h3><span class="acc-toggle" aria-hidden="true">+</span></button>
+        <div class="acc-body"><div><div class="acc-inner"><p>80% наших клиентов — удалённые: Москва, Сочи, Санкт-Петербург, Сухум, Екатеринбург. Созвоны, общая доска проекта, отчёты и доступ к тестовой версии сайта — всё онлайн. География не влияет на качество вообще.</p></div></div></div>
+      </div>
+      <div class="acc-item rv d3"><button class="acc-head" aria-expanded="false"><h3>Что нужно от меня?</h3><span class="acc-toggle" aria-hidden="true">+</span></button>
+        <div class="acc-body"><div><div class="acc-inner"><p>Примерно 2–3 часа времени на бриф и примеры того, что вам нравится. Тексты, структуру и аргументы поможем собрать сами — это часть нашей работы, а не ваша домашняя заготовка.</p></div></div></div>
+      </div>
+      <div class="acc-item rv d4"><button class="acc-head" aria-expanded="false"><h3>А поддержка после запуска?</h3><span class="acc-toggle" aria-hidden="true">+</span></button>
+        <div class="acc-body"><div><div class="acc-inner"><p>Первые 30 дней — бесплатно: правки, бэкапы, хостинг, консультации. Дальше — тарифы от 5 000 ₽/мес, включая мониторинг магазина и касс 24/7. Мы не пропадаем после запуска — это принцип.</p></div></div></div>
+      </div>
+      <div class="acc-item rv d5"><button class="acc-head" aria-expanded="false"><h3>Можно заказать только дизайн или только вёрстку?</h3><span class="acc-toggle" aria-hidden="true">+</span></button>
+        <div class="acc-body"><div><div class="acc-inner"><p>Да. Возьмём любой этап отдельно: прототип, дизайн, вёрстку, интеграции или перенос существующего сайта на новую платформу.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КОНТАКТЫ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">07 — Контакты</span>
+      <h2 class="h2"><span class="lm"><span>Расскажите о задаче —</span></span><span class="lm"><span>посчитаем за 24 часа</span></span></h2>
+    </div>
+    <div class="contact-grid">
+      <form id="leadForm" novalidate class="rv">
+        <div class="field"><label for="fName">Ваше имя *</label><input type="text" id="fName" name="name" required autocomplete="name" placeholder="Как к вам обращаться"></div>
+        <div class="field"><label for="fPhone">Телефон или Telegram *</label><input type="text" id="fPhone" name="phone" required placeholder="+7 ___ ___-__-__ или @ник"></div>
+        <div class="field"><label for="fType">Что нужно сделать</label>
+          <select id="fType" name="type">
+            <option>Лендинг / одностраничник</option>
+            <option>Интернет-магазин</option>
+            <option>Автоматизация торговли</option>
+            <option>Другое / пока не знаю</option>
+          </select>
+        </div>
+        <div class="field"><label for="fMsg">Пара слов о задаче</label><textarea id="fMsg" name="msg" placeholder="Например: кафе на набережной, хотим приём заказов онлайн…"></textarea></div>
+        <button type="submit" class="btn btn--tan" id="submitBtn">Отправить заявку →</button>
+      </form>
+      <aside class="info-card rv d1">
+        <h3>Связь напрямую</h3>
+        <div class="info-row big"><span class="k">Тел</span><a href="tel:+79407770102">+7 940 777-01-02</a></div>
+        <div class="info-row"><span class="k">WhatsApp</span><a href="https://wa.me/79407770102" target="_blank" rel="noopener">написать в чат</a></div>
+        <div class="info-row"><span class="k">Telegram</span><a href="https://t.me/ritsa_tech" target="_blank" rel="noopener">@ritsa_tech</a></div>
+        <div class="info-row"><span class="k">Почта</span><a href="mailto:hello@ritsa.tech">hello@ritsa.tech</a></div>
+        <div class="info-row"><span class="k">Офис</span><span>Гагра, пр-т Ардзинба, 20</span></div>
+        <p class="info-foot">пн–сб · 9:00–19:00 · GMT+3<br>43.3281° N, 40.2239° E · у самого моря<br>Отвечаем в течение рабочего дня.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="giant" aria-hidden="true">Рица.tech</div>
+    <div class="foot-cols">
+      <div><h4>Разделы</h4><a href="#services">Услуги</a><a href="#process">Процесс</a><a href="#cases">Кейсы</a><a href="#faq">Вопросы</a></div>
+      <div><h4>Услуги</h4><a href="#services">Одностраничные сайты</a><a href="#services">Интернет-магазины</a><a href="#auto">Автоматизация торговли</a><a href="#contact">Поддержка 24/7</a></div>
+      <div><h4>Связь</h4><a href="tel:+79407770102">+7 940 777-01-02</a><a href="mailto:hello@ritsa.tech">hello@ritsa.tech</a><a href="https://t.me/ritsa_tech" target="_blank" rel="noopener">Telegram</a><a href="https://wa.me/79407770102" target="_blank" rel="noopener">WhatsApp</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Студия «Рица» · Гагра, Абхазия</span>
+      <span>сделано у моря · 43.3281° N, 40.2239° E</span>
+      <span>ritsa.tech — код с горы, продажи с моря</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* прогресс-бар + шапка */
+  var bar = document.getElementById('bar'), header = document.getElementById('header');
+  function onScroll(){
+    var h = document.documentElement;
+    var p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+    bar.style.width = (p*100) + '%';
+    header.classList.toggle('scrolled', h.scrollTop > 20);
+  }
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* мобильное меню */
+  var burger = document.getElementById('burger');
+  burger.addEventListener('click', function(){
+    var open = document.body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('.mnav a').forEach(function(a){
+    a.addEventListener('click', function(){ document.body.classList.remove('menu-open'); burger.setAttribute('aria-expanded','false'); });
+  });
+
+  /* reveal по скроллу */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.15});
+  document.querySelectorAll('.rv, .sec-head').forEach(function(el){ io.observe(el); });
+
+  /* счётчики */
+  var cio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el = e.target, target = parseFloat(el.dataset.count), dec = parseInt(el.dataset.dec||'0',10);
+      cio.unobserve(el);
+      if(RM){ el.textContent = target.toFixed(dec); return; }
+      var t0 = null, dur = 1400;
+      function tick(t){
+        if(!t0) t0 = t;
+        var p = Math.min((t-t0)/dur, 1), ease = 1 - Math.pow(1-p, 3);
+        el.textContent = (target*ease).toFixed(dec);
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }, {threshold:.6});
+  document.querySelectorAll('.num').forEach(function(el){ cio.observe(el); });
+
+  /* scramble-заголовок */
+  var CH = '▮▯◆#%&$≠=+*/\\';
+  function scramble(el, delay){
+    var text = el.dataset.text;
+    if(RM){ el.textContent = text; return; }
+    var frame = 0;
+    setTimeout(function(){
+      var iv = setInterval(function(){
+        var out = '';
+        for(var i=0;i<text.length;i++){
+          if(i < frame/2) out += text[i];
+          else if(text[i]===' ') out += ' ';
+          else out += CH[Math.floor(Math.random()*CH.length)];
+        }
+        el.textContent = out; frame++;
+        if(frame/2 >= text.length){ el.textContent = text; clearInterval(iv); }
+      }, 30);
+    }, delay);
+  }
+  document.querySelectorAll('.scr').forEach(function(el,i){ scramble(el, 300 + i*450); });
+
+  /* терминал */
+  var lines = [
+    {t:'$ ritsa deploy --project "кофейня у моря"', c:'t-cmd'},
+    {t:'прототип и текст готовы за 2 дня', c:'t-ok'},
+    {t:'дизайн утверждён · 2 круга правок', c:'t-ok'},
+    {t:'сборка: 0 ошибок · lighthouse 98/100', c:'t-ok'},
+    {t:'касса и склад синхронизированы', c:'t-ok'},
+    {t:'➜ https://кофейня-у-моря.рф — запуск за 9 дней', c:'t-url'}
+  ];
+  var tb = document.getElementById('termBody');
+  var cur = document.createElement('span'); cur.className = 'cursor';
+  function renderInstant(){
+    lines.forEach(function(l){ var d = document.createElement('div'); d.className = l.c; d.textContent = l.t; tb.appendChild(d); });
+    tb.appendChild(cur);
+  }
+  function typeAll(){
+    var li = 0;
+    function nextLine(){
+      if(li >= lines.length){ tb.appendChild(cur); return; }
+      var l = lines[li], d = document.createElement('div');
+      d.className = l.c; tb.appendChild(d); d.appendChild(cur);
+      var ci = 0;
+      var iv = setInterval(function(){
+        d.textContent = l.t.slice(0, ++ci); d.appendChild(cur);
+        if(ci >= l.t.length){ clearInterval(iv); li++; setTimeout(nextLine, 260); }
+      }, 22);
+    }
+    setTimeout(nextLine, 600);
+  }
+  RM ? renderInstant() : typeAll();
+
+  /* аккордеоны */
+  document.querySelectorAll('.acc-item').forEach(function(item){
+    var head = item.querySelector('.acc-head');
+    head.addEventListener('click', function(){
+      var wasOpen = item.classList.contains('open');
+      var group = item.parentElement;
+      group.querySelectorAll('.acc-item.open').forEach(function(o){
+        o.classList.remove('open'); o.querySelector('.acc-head').setAttribute('aria-expanded','false');
+      });
+      if(!wasOpen){ item.classList.add('open'); head.setAttribute('aria-expanded','true'); }
+    });
+    if(item.dataset.open === 'true'){ item.classList.add('open'); head.setAttribute('aria-expanded','true'); }
+  });
+
+  /* активный пункт меню */
+  var navMap = {};
+  document.querySelectorAll('nav.desk a[data-nav]').forEach(function(a){ navMap[a.dataset.nav] = a; });
+  var sio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting && navMap[e.target.id]){
+        Object.keys(navMap).forEach(function(k){ navMap[k].classList.remove('active'); });
+        navMap[e.target.id].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-40% 0px -55% 0px'});
+  ['services','process','cases','auto','faq'].forEach(function(id){
+    var s = document.getElementById(id); if(s) sio.observe(s);
+  });
+
+  /* форма + тост */
+  var toast = document.getElementById('toast'), toastT;
+  function showToast(msg){
+    toast.textContent = msg; toast.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function(){ toast.classList.remove('show'); }, 4200);
+  }
+  document.getElementById('leadForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var ok = true;
+    ['fName','fPhone'].forEach(function(id){
+      var inp = document.getElementById(id), f = inp.closest('.field');
+      f.classList.remove('err');
+      if(!inp.value.trim()){ f.classList.add('err'); ok = false; }
+    });
+    if(!ok){ showToast('⚠ Заполните имя и контакт — иначе нам не ответить вам'); return; }
+    var btn = document.getElementById('submitBtn');
+    btn.textContent = 'Заявка улетела ✓'; btn.disabled = true; btn.style.opacity = .75;
+    showToast('✓ Спасибо! Ответим в течение рабочего дня. А пока — загляните в кейсы ↑');
+    this.reset();
+    setTimeout(function(){ btn.textContent = 'Отправить заявку →'; btn.disabled = false; btn.style.opacity = 1; }, 5000);
+  });
+})();
+</script>
+</body>
+</html>
